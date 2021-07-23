@@ -1,10 +1,10 @@
 Funcionalidade: Gerenciar minhas medidas
 Eu como usuário
-Quero ter acesso as medidas e poder adicionar novas medidas
+Quero ter acesso as minhas últimas medidas e adicionar novas medidas
 
 Cenário: Visualizar as últimas medidas inseridas
 Dado que eu abri o aplicativo
-Quando eu clicar no item "Medidas"
+Quando eu clicar no menu/botão "Medidas"
 E for encaminhado para outra página
 Então as últimas medidas adicionadas serão mostradas
 
@@ -25,7 +25,3 @@ E clicar nas medidas
 E adicionar os novos valores
 E clicar em atualizar
 Então aparecerá uma mensagem de erro 
-E as medidas serão salvas offline
-
-Cenário: Sicronizar as medidas que não foram enviadas
-
