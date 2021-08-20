@@ -1,5 +1,4 @@
 import 'package:bodyapp/shared/colors.dart';
-import 'package:bodyapp/shared/text_theme.dart';
 import 'package:boxicons/boxicons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

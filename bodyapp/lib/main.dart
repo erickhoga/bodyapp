@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pixel_perfect/pixel_perfect.dart';
 
-import 'home/home.dart';
+import 'login/login.dart';
+// import 'home/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,13 +14,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       home: PixelPerfect(
-        assetPath: 'design/screens/home.png',
-        scale: .64,
+        assetPath: 'design/screens/login.png',
+        scale: .62,
         initOpacity: 0.5,
-        child: HomeScreen(),
+        child: LoginScreen(),
       ),
     );
   }
