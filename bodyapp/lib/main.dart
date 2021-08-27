@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       ),
       home: PixelPerfect(
         assetPath: 'design/screens/login.png',
-        scale: .62,
+        scale: .9,
         initOpacity: 0.5,
         child: LoginScreen(),
       ),

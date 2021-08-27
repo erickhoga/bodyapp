@@ -1,38 +1,151 @@
 import 'package:bodyapp/shared/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/brandico_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:validators/validators.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            color: Colors.orange,
-            height: height / 3,
-          ),
-          Form(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InputWidget(
-                    hintText: 'Email',
-                    prefixIcon: Icons.email_outlined,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.orange,
+              height: height / 3,
+            ),
+            LoginFormWidget(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () {},
+                child: Center(
+                  child: Text(
+                    'Esqueceu a senha?',
+                    style: GoogleFonts.rokkitt(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InputWidget(
-                    hintText: 'Senha',
-                    prefixIcon: Icons.lock,
-                    sufixIcon: Icons.visibility,
-                    obscureText: true,
-                    suffixIconOnPressed: () {},
+              ),
+            ),
+            Divider(
+              indent: 32,
+              endIndent: 32,
+              thickness: 4,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Novo aqui? Cria uma conta aqui.',
+                  style: GoogleFonts.rokkitt(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
                   ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  onPressed: null,
+                  icon: Icon(Brandico.facebook_1),
+                  iconSize: 32,
+                ),
+                IconButton(
+                  onPressed: null,
+                  icon: Icon(Brandico.twitter_bird),
+                  iconSize: 32,
+                ),
+                IconButton(
+                  onPressed: null,
+                  icon: Icon(Brandico.googleplus_rect),
+                  iconSize: 32,
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class LoginFormWidget extends StatefulWidget {
+  const LoginFormWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _LoginFormWidgetState createState() => _LoginFormWidgetState();
+}
+
+class _LoginFormWidgetState extends State<LoginFormWidget> {
+  final _formKey = GlobalKey<FormState>();
+
+  bool isPasswordObscured = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InputWidget(
+              hintText: 'Email',
+              prefixIcon: Icons.email_outlined,
+              validator: (value) {
+                if (value != null && !isEmail(value)) {
+                  return 'Preencha um e-mail válido.';
+                }
+                return null;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InputWidget(
+              hintText: 'Senha',
+              prefixIcon: Icons.lock,
+              sufixIcon:
+                  isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+              obscureText: isPasswordObscured,
+              suffixIconOnPressed: () {
+                setState(() {
+                  isPasswordObscured = !isPasswordObscured;
+                });
+              },
+              validator: (value) {
+                if (value != null && value.length < 6) {
+                  return 'A senha deve conter no mínimo 6 caracteres';
+                }
+                return null;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Center(
+                child: Text(
+                  'Sign in',
+                  style: GoogleFonts.rokkitt(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
@@ -47,6 +160,7 @@ class InputWidget extends StatelessWidget {
   IconData? sufixIcon;
   bool obscureText;
   VoidCallback? suffixIconOnPressed;
+  String? Function(String?)? validator;
 
   InputWidget({
     this.hintText,
@@ -54,6 +168,7 @@ class InputWidget extends StatelessWidget {
     this.sufixIcon,
     this.obscureText = false,
     this.suffixIconOnPressed,
+    this.validator,
   });
 
   @override
@@ -95,10 +210,7 @@ class InputWidget extends StatelessWidget {
           onPressed: suffixIconOnPressed,
         ),
       ),
-      validator: (value) {
-        if (value != null && value.length > 4) return 'Erro';
-        return null;
-      },
+      validator: validator,
     );
   }
 }
