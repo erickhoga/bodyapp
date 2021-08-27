@@ -1,45 +1,102 @@
 import 'package:bodyapp/shared/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/brandico_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:validators/validators.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            color: Colors.orange,
-            height: height / 3,
-          ),
-          LoginFormWidget(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.orange,
+              height: height / 3,
+            ),
+            LoginFormWidget(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () {},
+                child: Center(
+                  child: Text(
+                    'Esqueceu a senha?',
+                    style: GoogleFonts.rokkitt(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Divider(
+              indent: 32,
+              endIndent: 32,
+              thickness: 4,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Novo aqui? Cria uma conta aqui.',
+                  style: GoogleFonts.rokkitt(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  onPressed: null,
+                  icon: Icon(Brandico.facebook_1),
+                  iconSize: 32,
+                ),
+                IconButton(
+                  onPressed: null,
+                  icon: Icon(Brandico.twitter_bird),
+                  iconSize: 32,
+                ),
+                IconButton(
+                  onPressed: null,
+                  icon: Icon(Brandico.googleplus_rect),
+                  iconSize: 32,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class LoginFormWidget extends StatefulWidget {
+  const LoginFormWidget({
+    Key? key,
+  }) : super(key: key);
+
   @override
   _LoginFormWidgetState createState() => _LoginFormWidgetState();
 }
 
 class _LoginFormWidgetState extends State<LoginFormWidget> {
-  RegExp _email = RegExp(r"(\w*\.?\w*@\w*\.(com|net|co|edu))");
-  RegExp _upper = RegExp(r'[A-Z]');
-  RegExp _lower = RegExp(r'[a-z]');
-  RegExp _numeric = RegExp(r'[0-9]');
+  final _formKey = GlobalKey<FormState>();
 
-  bool _isObscure = true;
-  String email = '';
-  String password = '';
-
-  GlobalKey _key = GlobalKey();
+  bool isPasswordObscured = true;
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _key,
+      key: _formKey,
       child: Column(
         children: [
           Padding(
@@ -47,14 +104,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
             child: InputWidget(
               hintText: 'Email',
               prefixIcon: Icons.email_outlined,
-              onChanged: (value) {
-                setState(() {
-                  email = value;
-                });
-              },
               validator: (value) {
-                if (value != null && !_email.hasMatch(value)) {
-                  return 'Insira um e-mail válido.';
+                if (value != null && !isEmail(value)) {
+                  return 'Preencha um e-mail válido.';
                 }
                 return null;
               },
@@ -65,56 +117,35 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
             child: InputWidget(
               hintText: 'Senha',
               prefixIcon: Icons.lock,
-              sufixIcon: !_isObscure
-                  ? Icons.visibility_outlined
-                  : Icons.visibility_off_outlined,
-              obscureText: _isObscure,
+              sufixIcon:
+                  isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+              obscureText: isPasswordObscured,
               suffixIconOnPressed: () {
                 setState(() {
-                  _isObscure = !_isObscure;
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  password = value;
+                  isPasswordObscured = !isPasswordObscured;
                 });
               },
               validator: (value) {
                 if (value != null && value.length < 6) {
-                  return 'A senha deve ter mais do que 6 caracteres.';
+                  return 'A senha deve conter no mínimo 6 caracteres';
                 }
-                if (value != null && !value.contains(_upper)) {
-                  return 'A senha deve conter pelo menos um caractere uppercase.';
-                }
-                if (value != null && !value.contains(_lower)) {
-                  return 'A senha deve conter pelo menos um caractere lowercase.';
-                }
-                if (value != null && !value.contains(_numeric)) {
-                  return 'A senha deve conter pelo menos um caractere numerico.';
-                }
-
                 return null;
               },
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 16,
-              horizontal: 24,
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Center(
-                  child: Text('Sign In'),
-                ),
-              ),
               onPressed: () {},
+              child: Center(
+                child: Text(
+                  'Sign in',
+                  style: GoogleFonts.rokkitt(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
@@ -130,7 +161,7 @@ class InputWidget extends StatelessWidget {
   bool obscureText;
   VoidCallback? suffixIconOnPressed;
   String? Function(String?)? validator;
-  Function(String)? onChanged;
+  void Function(String)? onChanged;
 
   InputWidget({
     this.hintText,
