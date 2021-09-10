@@ -90,7 +90,9 @@ class LoginFormWidget extends StatefulWidget {
 
 class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _formKey = GlobalKey<FormState>();
-
+  RegExp _upper = RegExp(r'[A-Z]');
+  RegExp _lower = RegExp(r'[a-z]');
+  RegExp _numeric = RegExp(r'[0-9]');
   bool isPasswordObscured = true;
 
   @override
@@ -128,6 +130,15 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               validator: (value) {
                 if (value != null && value.length < 6) {
                   return 'A senha deve conter no mínimo 6 caracteres';
+                }
+                if (value != null && !value.contains(_upper)) {
+                  return 'A senha deve conter pelo menos um caractere uppercase.';
+                }
+                if (value != null && !value.contains(_lower)) {
+                  return 'A senha deve conter pelo menos um caractere lowercase.';
+                }
+                if (value != null && !value.contains(_numeric)) {
+                  return 'A senha deve conter pelo menos um caractere numerico.';
                 }
                 return null;
               },
