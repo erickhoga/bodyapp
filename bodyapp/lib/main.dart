@@ -1,3 +1,4 @@
+import 'package:bodyapp/objetivos/objetivos.dart';
 import 'package:bodyapp/shared/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:pixel_perfect/pixel_perfect.dart';
@@ -36,10 +37,10 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: PixelPerfect(
-        assetPath: 'design/screens/dieta.png',
+        assetPath: 'design/screens/visualizar_melhor.png',
         scale: .64,
         initOpacity: 0,
-        child: DietaScreen(),
+        child: ObjetivosScreen(),
       ),
     );
   }

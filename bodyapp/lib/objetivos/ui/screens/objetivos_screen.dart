@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bodyapp/objetivos/ui/screens/screens.dart';
 import 'package:bodyapp/shared/widgets/widgets.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:bodyapp/shared/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ObjetivosScreen extends StatelessWidget {
+class ObjetivosScreen extends StatefulWidget {
   static const String pageName = 'objetivos';
 
   @override
+  _ObjetivosScreenState createState() => _ObjetivosScreenState();
+}
+
+class _ObjetivosScreenState extends State<ObjetivosScreen> {
+  int tabIndex = 0;
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1,
+      initialIndex: tabIndex,
       length: 2,
       child: Scaffold(
         appBar: AppBar(
@@ -22,13 +29,28 @@ class ObjetivosScreen extends StatelessWidget {
           bottom: ColoredTabBar(
             color: Colors.white,
             tabBar: TabBar(
-                indicatorColor: AppColors.teal,
-                labelColor: AppColors.teal,
-                tabs: [Tab(text: 'Personalizado'), Tab(text: 'Recomendado')]),
+              onTap: (index) {
+                setState(() {
+                  tabIndex = index;
+                });
+              },
+              indicatorColor: AppColors.teal,
+              labelColor: AppColors.teal,
+              tabs: [Tab(text: 'Personalizado'), Tab(text: 'Recomendado')],
+            ),
           ),
         ),
         body: TabBarView(
-            children: [PersonalizadoViewWidget(), RecomendadoViewWidget()]),
+          children: [PersonalizadoViewWidget(), RecomendadoViewWidget()],
+        ),
+        floatingActionButton: tabIndex == 0
+            ? FloatingActionButton(
+                onPressed: () {},
+                backgroundColor: AppColors.teal,
+                child: Icon(Icons.add, color: Colors.white),
+              )
+            : null,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
@@ -183,12 +205,25 @@ class PersonalizadoViewWidget extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VisualizarMelhorScreen(
+                                objetivo: objetivo,
+                              ),
+                            ),
+                          );
+                        },
                         contentPadding: const EdgeInsets.only(right: 16),
                         leading: Container(
                           width: 99 / 320 * width,
-                          child: Image.asset(
-                            'assets/images/${objetivo.cover}',
-                            fit: BoxFit.fitHeight,
+                          child: Hero(
+                            tag: objetivo.cover,
+                            child: Image.asset(
+                              'assets/images/${objetivo.cover}',
+                              fit: BoxFit.fitHeight,
+                            ),
                           ),
                         ),
                         title: Text(
