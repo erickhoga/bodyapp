@@ -5,6 +5,7 @@ import 'package:pixel_perfect/pixel_perfect.dart';
 
 import 'dieta/dieta.dart';
 import 'login/login.dart';
+import 'medidas/medidas.dart';
 // import 'home/home.dart';
 
 void main() {
@@ -36,12 +37,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: PixelPerfect(
-        assetPath: 'design/screens/visualizar_melhor.png',
-        scale: .64,
-        initOpacity: 0,
-        child: ObjetivosScreen(),
-      ),
+      home: MedidasScreen(),
     );
   }
 }

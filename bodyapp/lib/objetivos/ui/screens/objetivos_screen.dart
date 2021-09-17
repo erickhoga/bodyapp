@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bodyapp/dieta/dieta.dart';
 import 'package:bodyapp/objetivos/ui/screens/screens.dart';
 import 'package:bodyapp/shared/widgets/widgets.dart';
 import 'package:direct_select_flutter/direct_select_container.dart';
@@ -17,6 +18,7 @@ class ObjetivosScreen extends StatefulWidget {
 
 class _ObjetivosScreenState extends State<ObjetivosScreen> {
   int tabIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -45,7 +47,14 @@ class _ObjetivosScreenState extends State<ObjetivosScreen> {
         ),
         floatingActionButton: tabIndex == 0
             ? FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MaisDietasScreen(),
+                    ),
+                  );
+                },
                 backgroundColor: AppColors.teal,
                 child: Icon(Icons.add, color: Colors.white),
               )
@@ -100,7 +109,14 @@ class RecomendadoViewWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 32.0, right: 32),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DietaScreen(),
+                  ),
+                );
+              },
               child: Container(
                 height: (32 / 568 * MediaQuery.of(context).size.height),
                 width: (107 / 320 * MediaQuery.of(context).size.width),
@@ -202,44 +218,93 @@ class PersonalizadoViewWidget extends StatelessWidget {
                   itemCount: objetivos.length,
                   itemBuilder: (context, index) {
                     Objetivo objetivo = objetivos[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VisualizarMelhorScreen(
-                                objetivo: objetivo,
-                              ),
-                            ),
-                          );
-                        },
-                        contentPadding: const EdgeInsets.only(right: 16),
-                        leading: Container(
-                          width: 99 / 320 * width,
-                          child: Hero(
-                            tag: objetivo.cover,
-                            child: Image.asset(
-                              'assets/images/${objetivo.cover}',
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ),
-                        title: Text(
-                          '${objetivo.title}',
-                          style: GoogleFonts.lato(
-                            fontSize: 13 / 568 * height,
-                            color: AppColors.teal,
-                          ),
-                        ),
-                        subtitle: Text(
-                          '${objetivo.text}',
-                          style: GoogleFonts.lato(fontSize: 10 / 568 * height),
+                    return DietaCardWidget(objetivo: objetivo);
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DietaCardWidget extends StatelessWidget {
+  const DietaCardWidget({
+    Key? key,
+    required this.objetivo,
+  }) : super(key: key);
+
+  final Objetivo objetivo;
+
+  @override
+  Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => VisualizarMelhorScreen(
+                objetivo: objetivo,
+              ),
+            ),
+          );
+        },
+        child: Card(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16))),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      bottomLeft: Radius.circular(16),
+                    ),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  height: 80 / 568 * height,
+                  child: Hero(
+                    tag: objetivo.cover,
+                    child: Image.asset(
+                      'assets/images/${objetivo.cover}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${objetivo.title}',
+                        style: GoogleFonts.lato(
+                          fontSize: 13 / 568 * height,
+                          color: AppColors.teal,
                         ),
                       ),
-                    );
-                  },
+                      SizedBox(height: 8),
+                      Text(
+                        '${objetivo.text}',
+                        style: GoogleFonts.lato(fontSize: 10 / 568 * height),
+                        maxLines: 3,
+                        softWrap: true,
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],
@@ -254,11 +319,13 @@ class Objetivo {
   String title;
   String cover;
   String text;
+  bool isSelected;
 
   Objetivo({
     required this.title,
     required this.cover,
     required this.text,
+    this.isSelected = false,
   });
 
   @override
