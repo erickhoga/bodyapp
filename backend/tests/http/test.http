@@ -7,11 +7,12 @@ GET http://127.0.0.1:8000/hello/2021
 
 
 ###
-POST http://127.0.0.1:8000/login
+POST http://127.0.0.1:8000/register
 Content-Type: application/json
 
 {
-    "email": "mhadaniya@emai.com",
+    "name": "Mario",
+    "email": "mhadaniya@email.com",
     "password": "12345"
 }
 
