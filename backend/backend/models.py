@@ -8,9 +8,9 @@ from .database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(BigInteger, primary_key=True, index=True)
-    email = Column(String, unique=True, unique=True)
-    name = Column(String, nullable=True)
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True)
+    name = Column(String)
     hashed_password = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
     birth_date = Column(DateTime, nullable=True)
@@ -21,7 +21,7 @@ class User(Base):
 class Measure(Base):
     __tablename__ = "measures"
 
-    id = Column(BigInteger, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     height = Column(Integer, default=0)
     weight = Column(Integer, default=0)
     neck = Column(Integer, default=0)

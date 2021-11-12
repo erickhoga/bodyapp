@@ -27,6 +27,7 @@ class Measure(MeasureBase):
 
 
 class UserBase(BaseModel):
+    name: str
     email: str
 
 
@@ -37,8 +38,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
-    birth_date: datetime
-    measures: List[Measure] = []
+    birth_date: Optional[datetime]    
 
     class Config:
         orm_mode = True

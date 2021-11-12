@@ -1,77 +1,31 @@
-from datetime import datetime
-from typing import Optional
-from fastapi import FastAPI, status
-from fastapi.responses import JSONResponse
+from typing import List
 
-from pydantic import BaseModel
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.orm import Session
+
+from . import crud, models, schemas
+from .database import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-class User(BaseModel):
-    name: str
-    email: str
-    password: Optional[str] = None
-    data_de_nascimento: Optional[datetime]
-    sexo: Optional[str]
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-class LoginModel(BaseModel):
-    email: str
-    password: str
+@app.post("/users/", response_model=schemas.User)
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email=user.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="E-mail já cadastrado")
 
-class NotFoundError(BaseModel):
-    message: str
+    return crud.create_user(db=db, user=user)
 
-
-users = [
-    User(name='Homer Simpson', email='homer.simpson@email.com'),
-    User(name='Bart Simpson', email='bart.simpson@email.com'),
-    User(name='Marge Simpson', email='marge.simpson@email.com'),
-    User(name='Lisa Simpson', email='lisa.simpson@email.com')
-]
-
-@app.get("/hello")
-def hello():
-    return {"message": "hello, world"}
-
-
-
-
-@app.post("/login")
-def login(user: LoginModel):    
-    return {"user": user}
-
-
-
-
-
-@app.get("/users")
-def list_all():
-    """Endpoint to return all users
-
-    Returns:
-        users: A list of users
-    """
+@app.get("/users/", response_model=List[schemas.User])
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    users = crud.get_users(db, skip=skip, limit=limit)
     return users
-
-
-@app.get("/users/{user_id}", responses = {404: {"model": NotFoundError}})
-def read_item(user_id: int, q: Optional[str] = None):
-    if user_id < len(users):
-        return {"user": users[user_id]}
-    
-    return JSONResponse(status_code=404, content={"message": "Usuário não encontrado"})
-
-
-@app.post("/users", status_code=status.HTTP_201_CREATED)
-def create(user: User):
-    users.append(user)
-    return {"user": user}
-
-
-
-
-
-@app.post("/register", status_code=status.HTTP_201_CREATED)
-def register(user: User):
-    users.append(user)
-    return {"user": user}
