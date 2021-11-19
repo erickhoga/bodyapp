@@ -7,12 +7,12 @@ GET http://127.0.0.1:8000/hello/2021
 
 
 ###
-POST http://127.0.0.1:8000/users/
+POST http://127.0.0.1:8082/users/
 Content-Type: application/json
 
 {
-    "name": "Mario IV",
-    "email": "mhadaniyaiv@email.com",
+    "name": "Mario Ix",
+    "email": "mhadaniyaix@email.com",
     "password": "12345"
 }
 

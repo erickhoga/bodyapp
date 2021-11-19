@@ -7,7 +7,7 @@ services:
     volumes:
       - .:/usr/app
     ports:
-      - "8000:8000"
+      - "8082:8000"
     networks:
       - bodyapp
 
@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "5432:5432"
+      - "5434:5432"
     environment:
       - POSTGRES_DB=bodyapp
       - POSTGRES_USER=bodyapp
