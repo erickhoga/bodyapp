@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
     "name": "Mario Ix",
-    "email": "mhadaniyaix@email.com",
+    "email": "mhadaniya1ix@email.com",
     "password": "12345"
 }
 
@@ -24,7 +24,7 @@ Content-Type: application/json
 
 
 ###
-GET http://127.0.0.1:8000/users/
+GET http://127.0.0.1:8082/users/
 
 
 
@@ -33,8 +33,16 @@ GET http://127.0.0.1:8000/users/
 
 
 ###
-GET http://127.0.0.1:8000/users/99
+GET http://127.0.0.1:8082/users/1
 
+
+###
+PUT http://127.0.0.1:8082/users/1
+Content-Type: application/json
+
+{
+    
+}
 
 
 
