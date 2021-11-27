@@ -23,6 +23,9 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+def get_measure(db: Session, user_id: int):
+    return db.query(models.Measure).filter(models.Measure.user_id == user_id).first()
+
 def get_measures(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Measure).offset(skip).limit(limit).all()
 

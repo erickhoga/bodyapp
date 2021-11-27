@@ -30,6 +30,10 @@ Content-Type: application/json
 
 
 ###
+GET http://127.0.0.1:8082/users/1/measures/
+
+
+###
 GET http://127.0.0.1:8082/measures/
 
 
