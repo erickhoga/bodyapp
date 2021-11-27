@@ -23,6 +23,18 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+def update_user(db: Session, user_id: int, user: schemas.UserCreate):
+    db_user = models.User(
+        name=user.name, 
+        email=user.email, 
+        birth_date = user.birth_date
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+    return db.query(models.Measure).filter(models.Measure.user_id == user_id).first()
+
 def get_measure(db: Session, user_id: int):
     return db.query(models.Measure).filter(models.Measure.user_id == user_id).first()
 

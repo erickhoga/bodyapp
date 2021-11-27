@@ -30,6 +30,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     
     return user
 
+#VVVVVVVVVVVVVVVVVVVVVV -> desisto
 @app.post("/users/{item_id}/measures/", response_model=schemas.Measure)
 def create_measure(item_id:int,measure: schemas.UserCreate, db: Session = Depends(get_db)):
 
@@ -47,7 +48,7 @@ def read_measures(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
     measures = crud.get_measures(db, skip=skip, limit=limit)
     return measures
 
-#VVVVVVVVVVVVVVVV
+
 @app.get("/users/{item_id}/measures/", response_model=schemas.Measure)
 def read_users(item_id:int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     measure = crud.get_measure(db, user_id=item_id)
@@ -57,4 +58,10 @@ def read_users(item_id:int, skip: int = 0, limit: int = 100, db: Session = Depen
 def read_users(item_id:int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     user = crud.get_user(db, user_id=item_id)
     return user
+
+@app.put("/users/{item_id}", response_model=schemas.User)
+def read_users(item_id:int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    user = crud.get_user(db, user_id=item_id)
+    return user
+
 

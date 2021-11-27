@@ -11,13 +11,13 @@ POST http://127.0.0.1:8082/users/
 Content-Type: application/json
 
 {
-    "name": "Mario Ix2",
-    "email": "mhadaniya2ix@email.com",
+    "name": "joao",
+    "email": "joao@email.com",
     "password": "12345"
 }
 
 ###
-POST http://127.0.0.1:8082/users/1/measures/
+POST http://127.0.0.1:8082/users/2/measures/
 Content-Type: application/json
 
 {
