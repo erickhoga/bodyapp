@@ -11,14 +11,26 @@ POST http://127.0.0.1:8082/users/
 Content-Type: application/json
 
 {
-    "name": "Mario Ix",
-    "email": "mhadaniya1ix@email.com",
+    "name": "Mario Ix2",
+    "email": "mhadaniya2ix@email.com",
     "password": "12345"
 }
 
+###
+POST http://127.0.0.1:8082/users/1/measures/
+Content-Type: application/json
+
+{
+    "height": 170,
+    "weight": 50,
+    "thighs": 4,
+    "calf": 4,
+    "id": 1,
+}
 
 
-
+###
+GET http://127.0.0.1:8082/measures/
 
 
 
@@ -35,6 +47,9 @@ GET http://127.0.0.1:8082/users/
 ###
 GET http://127.0.0.1:8082/users/1
 
+
+###
+GET http://127.0.0.1:8082/users/2
 
 ###
 PUT http://127.0.0.1:8082/users/1
